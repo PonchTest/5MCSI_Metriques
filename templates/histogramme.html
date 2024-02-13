@@ -1,33 +1,47 @@
 <html>
   <head>
+    <meta charset="UTF-8" />
+    <title>Métrique</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load("current", {packages:["corechart"]});
-      google.charts.setOnLoadCallback(drawChart);
+    <script>
+      google.charts.load('current', { packages: ['corechart'] });
+      google.charts.setOnLoadCallback(fetchDataAndDrawChart);
+
+      // Cette fonction récupère les données et appelle drawChart
+      function fetchDataAndDrawChart() {
+        fetch('/tawarano/') // Assurez-vous que cette URL est correcte
+          .then(response => response.json())
+          .then(data => drawChart(data))
+          .catch(error => console.error('Error fetching data:', error));
+      }
+
       function drawChart(data) {
         var dataTable = new google.visualization.DataTable();
-            dataTable.addColumn('string', 'Date');
-            dataTable.addColumn('number', 'Valeur');
-            data.results.forEach(entry => {
-              var date = new Date(entry.Jour * 1000);
-              dataTable.addRow([date.toLocaleDateString(), entry.temp]);
-            });
-          
+        dataTable.addColumn('string', 'Date');
+        dataTable.addColumn('number', 'Valeur');
+
+        data.results.forEach(entry => {
+          var date = new Date(entry.Jour * 1000);
+          dataTable.addRow([date.toLocaleDateString(), entry.temp]);
+        });
+
         var options = {
-          title: 'Temperature de Tawarano',
-          legend: { position: 'none' },
+          title: 'Évolution des températures de Paris pour les 16 prochains jours',
+          curveType: 'function',
+          legend: { position: 'bottom' }
         };
 
-        var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
-        chart.draw(data, options);
-
-          // Récupération de données depuis notre API /paris/
-  fetch('/tawarano/')
-    .then(response => response.json())
-    .then(data => {
-      drawChart(data);
-    
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(dataTable, options);
       }
+
+        // Récupération de données depuis notre API
+    fetch('/tawarano/')
+      .then(response => response.json())
+      .then(data => {
+        drawChart(data);
+      })
+      
     </script>
   </head>
   <body>
