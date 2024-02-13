@@ -20,6 +20,13 @@
 
         var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
         chart.draw(data, options);
+
+          // Récupération de données depuis notre API /paris/
+  fetch('/tawarano/')
+    .then(response => response.json())
+    .then(data => {
+      drawChart(data);
+    
       }
     </script>
   </head>
