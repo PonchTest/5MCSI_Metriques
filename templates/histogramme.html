@@ -4,8 +4,8 @@
     <title>Métrique</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
-      google.charts.load('current', { packages: ['corechart'] });
-      google.charts.setOnLoadCallback(fetchDataAndDrawChart);
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
 
       // Cette fonction récupère les données et appelle drawChart
       function fetchDataAndDrawChart() {
@@ -26,7 +26,7 @@
         });
 
         var options = {
-          title: 'Évolution des températures de Paris pour les 16 prochains jours',
+          title: 'Évolution des températures de Tarawano pour les 16 prochains jours',
           curveType: 'function',
           legend: { position: 'bottom' }
         };
